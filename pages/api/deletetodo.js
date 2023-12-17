@@ -16,7 +16,7 @@ async function deletetodo(req, res) {
 
       client.close();
 
-      res.status(201).json({ message: "Todo Deleted" });
+      res.status(201).json({ message: "Todo Deleted Successfully" });
     } catch (error) {
       console.error("Error deleting todo:", error);
       res.status(500).json({ error: "Internal Server Error" });

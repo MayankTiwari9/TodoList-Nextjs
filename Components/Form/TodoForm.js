@@ -31,7 +31,7 @@ const TodoForm = (props) => {
   };
 
   return (
-    <form onSubmit={submitHandler} className="w-50 mx-auto">
+    <form onSubmit={submitHandler} className="w-50 mx-auto mt-5">
       <div className="form-group">
         <label htmlFor="exampleInputTodo">Your todo</label>
         <input
@@ -43,7 +43,7 @@ const TodoForm = (props) => {
           onChange={(e) => setTodo(e.target.value)}
         />
       </div>
-      <button type="submit" className="btn btn-primary">
+      <button type="submit" className="btn btn-primary mt-2">
         {isEditing ? "Update Todo" : "Add Todo"}
       </button>
     </form>
