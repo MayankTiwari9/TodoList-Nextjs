@@ -1,8 +1,39 @@
 import Head from "next/head";
 import TodoList from "@/Components/TodoList/TodoList";
 import { MongoClient } from "mongodb";
+import TodoForm from "@/Components/Form/TodoForm";
+import { useRouter } from "next/router";
 
 export default function Home(props) {
+  const router = useRouter();
+
+  const addTodoHandler = async (enteredTodoData) => {
+    const response = await fetch("/api/newtodo", {
+      method: "POST",
+      body: JSON.stringify(enteredTodoData),
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+
+    router.push("/");
+  };
+
+  const deleteTodoHandler = async (id) => {
+    const response = await fetch('/api/deletetodo', {
+      method: 'DELETE',
+      body: JSON.stringify({_id: id}),
+      headers: {
+        "Content-type": "application/json",
+      },
+    })
+    const data = await response.json();
+  }
+
+
+
   return (
     <>
       <Head>
@@ -11,7 +42,8 @@ export default function Home(props) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <TodoList todos={props.todos}/>
+      <TodoList todos={props.todos}  onDeleteTodo={deleteTodoHandler}/>
+      <TodoForm onAddTodo={addTodoHandler}/>
     </>
   );
 }
@@ -23,23 +55,23 @@ export async function getStaticProps() {
 
   const db = client.db();
 
-  const todoCollection = db.collection('todos');
+  const todoCollection = db.collection("todos");
 
-  const todos = await todoCollection.find().toArray();
+  const todos = await todoCollection.find({ completed: false }).toArray();
 
-  const serializedTodos  = todos.map(todo => {
-    return{
+  const serializedTodos = todos.map((todo) => {
+    return {
       ...todo,
       _id: todo._id.toString(),
-    }
-  })
+    };
+  });
 
-  // client.close();
+  client.close();
 
-  return{
+  return {
     props: {
-      todos: serializedTodos
+      todos: serializedTodos,
     },
     revalidate: 1,
-  }
+  };
 }
