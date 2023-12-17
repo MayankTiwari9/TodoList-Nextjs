@@ -12,7 +12,10 @@ async function deletetodo(req, res) {
       const db = client.db();
       const todoCollection = db.collection("todos");
 
-      const result = await todoCollection.updateOne({ _id: new ObjectId(_id) }, {$set: {completed: true}});
+      const result = await todoCollection.updateOne(
+        { _id: new ObjectId(_id) },
+        { $set: { completed: true } }
+      );
 
       client.close();
 

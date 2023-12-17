@@ -59,7 +59,6 @@ export default function Home(props) {
       router.push("/");
     }
   };
-  
 
   return (
     <>
