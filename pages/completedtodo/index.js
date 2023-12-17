@@ -5,7 +5,7 @@ import React from "react";
 const Completed = (props) => {
   return (
     <div>
-      <CompletedTodos todos={props.todos}/>
+      <CompletedTodos todos={props.todos} />
     </div>
   );
 };
@@ -19,7 +19,9 @@ export async function getStaticProps() {
 
   const completedTodoCollection = db.collection("todos");
 
-  const completedTodos = await completedTodoCollection.find({completed: true}).toArray();
+  const completedTodos = await completedTodoCollection
+    .find({ completed: true })
+    .toArray();
 
   const serializedTodos = completedTodos.map((todo) => {
     return {
@@ -30,12 +32,11 @@ export async function getStaticProps() {
 
   client.close();
 
-  return{
+  return {
     props: {
-        todos: serializedTodos
-    }
-  }
-
+      todos: serializedTodos,
+    },
+  };
 }
 
 export default Completed;

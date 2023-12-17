@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 
 const TodoForm = (props) => {
-    const [todo, setTodo] = useState('');
+  const [todo, setTodo] = useState("");
 
-    const submitHandler = (e) => {
-        e.preventDefault();
+  const submitHandler = (e) => {
+    e.preventDefault();
 
-        const todoData = {
-            todo,
-            completed:false
-        }
+    const todoData = {
+      todo,
+      completed: false,
+    };
 
-        props.onAddTodo(todoData);
-    }
+    props.onAddTodo(todoData);
+  };
 
   return (
     <form onSubmit={submitHandler}>

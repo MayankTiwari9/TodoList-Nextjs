@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 
 const TodoList = (props) => {
-  const [completed, setCompleted] = useState(false);
 
   const deleteTodoHandler = (id) => {
-    props.onDeleteTodo(id)
+    props.onDeleteTodo(id);
+  };
+
+  const completeHandler = (id) => {
+    props.onCompleteTodo(id);
   }
 
   return (
@@ -17,10 +20,14 @@ const TodoList = (props) => {
                 type="checkbox"
                 className="form-check-input border-dark"
                 id="exampleCheck1"
-                onChange={(e) => setCompleted(e.target.checked)}
+                onClick={(e) => completeHandler(item._id)}
               />
               <li className="list-group-item">{item.todo}</li>
-              <button type="button" className="btn btn-danger" onClick={() => deleteTodoHandler(item._id)}>
+              <button
+                type="button"
+                className="btn btn-danger"
+                onClick={() => deleteTodoHandler(item._id)}
+              >
                 Delete
               </button>
             </ul>

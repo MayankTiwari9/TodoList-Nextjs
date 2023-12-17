@@ -1,7 +1,7 @@
 const { MongoClient, ObjectId } = require("mongodb");
 
 async function deletetodo(req, res) {
-  if (req.method === "DELETE") {
+  if (req.method === "PUT") {
     try {
       const { _id } = req.body;
 
@@ -12,7 +12,7 @@ async function deletetodo(req, res) {
       const db = client.db();
       const todoCollection = db.collection("todos");
 
-      const result = await todoCollection.deleteOne({ _id: new ObjectId(_id) });
+      const result = await todoCollection.updateOne({ _id: new ObjectId(_id) }, {$set: {completed: true}});
 
       client.close();
 

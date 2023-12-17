@@ -3,15 +3,14 @@ import "@/styles/globals.css";
 import "bootstrap/dist/css/bootstrap.css";
 import { useEffect } from "react";
 
- function App({ Component, pageProps }) {
+function App({ Component, pageProps }) {
   useEffect(() => {
     import("bootstrap/dist/js/bootstrap");
   }, []);
 
   return (
     <div>
-
-    <Header/>
+      <Header />
       <Component {...pageProps} />
     </div>
   );

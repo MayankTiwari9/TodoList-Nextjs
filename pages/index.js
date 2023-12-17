@@ -22,17 +22,26 @@ export default function Home(props) {
   };
 
   const deleteTodoHandler = async (id) => {
-    const response = await fetch('/api/deletetodo', {
-      method: 'DELETE',
-      body: JSON.stringify({_id: id}),
+    const response = await fetch("/api/deletetodo", {
+      method: "DELETE",
+      body: JSON.stringify({ _id: id }),
       headers: {
         "Content-type": "application/json",
       },
-    })
+    });
+    const data = await response.json();
+  };
+
+  const completeTodoHandler = async (id) => {
+    const response = await fetch('/api/completetodo', {
+      method: "PUT",
+      body: JSON.stringify({ _id: id }),
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
     const data = await response.json();
   }
-
-
 
   return (
     <>
@@ -42,8 +51,8 @@ export default function Home(props) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <TodoList todos={props.todos}  onDeleteTodo={deleteTodoHandler}/>
-      <TodoForm onAddTodo={addTodoHandler}/>
+      <TodoList todos={props.todos} onDeleteTodo={deleteTodoHandler} onCompleteTodo={completeTodoHandler}/>
+      <TodoForm onAddTodo={addTodoHandler} />
     </>
   );
 }
