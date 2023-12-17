@@ -3,9 +3,11 @@ import TodoList from "@/Components/TodoList/TodoList";
 import { MongoClient } from "mongodb";
 import TodoForm from "@/Components/Form/TodoForm";
 import { useRouter } from "next/router";
+import { useState } from "react";
 
 export default function Home(props) {
   const router = useRouter();
+  const [editingTodo, setEditingTodo] = useState(null);
 
   const addTodoHandler = async (enteredTodoData) => {
     const response = await fetch("/api/newtodo", {
@@ -33,7 +35,7 @@ export default function Home(props) {
   };
 
   const completeTodoHandler = async (id) => {
-    const response = await fetch('/api/completetodo', {
+    const response = await fetch("/api/completetodo", {
       method: "PUT",
       body: JSON.stringify({ _id: id }),
       headers: {
@@ -41,7 +43,23 @@ export default function Home(props) {
       },
     });
     const data = await response.json();
-  }
+  };
+
+  const editTodoHandler = async (todo) => {
+    setEditingTodo(todo);
+    const response = await fetch("/api/edittodo", {
+      method: "PUT",
+      body: JSON.stringify({ _id: todo._id, data: todo.todo }),
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+    const res = await response.json();
+    if (res.message === "Todo Updated") {
+      router.push("/");
+    }
+  };
+  
 
   return (
     <>
@@ -51,8 +69,17 @@ export default function Home(props) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <TodoList todos={props.todos} onDeleteTodo={deleteTodoHandler} onCompleteTodo={completeTodoHandler}/>
-      <TodoForm onAddTodo={addTodoHandler} />
+      <TodoList
+        todos={props.todos}
+        onDeleteTodo={deleteTodoHandler}
+        onCompleteTodo={completeTodoHandler}
+        onEditTodo={editTodoHandler}
+      />
+      <TodoForm
+        onAddTodo={addTodoHandler}
+        onEditTodo={editTodoHandler}
+        editingTodo={editingTodo}
+      />
     </>
   );
 }

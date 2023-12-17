@@ -1,39 +1,19 @@
+// TodoList.js
 import React from "react";
 
-const TodoList = (props) => {
-
-  const deleteTodoHandler = (id) => {
-    props.onDeleteTodo(id);
-  };
-
-  const completeHandler = (id) => {
-    props.onCompleteTodo(id);
-  }
-
+const TodoList = ({ todos, onDeleteTodo, onCompleteTodo, onEditTodo }) => {
   return (
-    <>
-      {props.todos &&
-        props.todos.map((item) => {
-          return (
-            <ul className="d-flex justify-content-around">
-              <input
-                type="checkbox"
-                className="form-check-input border-dark"
-                id="exampleCheck1"
-                onClick={(e) => completeHandler(item._id)}
-              />
-              <li className="list-group-item">{item.todo}</li>
-              <button
-                type="button"
-                className="btn btn-danger"
-                onClick={() => deleteTodoHandler(item._id)}
-              >
-                Delete
-              </button>
-            </ul>
-          );
-        })}
-    </>
+    <ul>
+      {todos.map((todo) => (
+        <li key={todo._id} className="d-flex justify-content-between w-50 mx-auto mt-2 p-2 align-items-center">
+          <p className="col-4">{todo.todo}</p>
+          
+          <button className="btn btn-success m-2" style={{width: "100px"}} onClick={() => onEditTodo(todo)}>Edit</button>
+          <button className="btn btn-danger m-2" style={{width: "100px"}} onClick={() => onDeleteTodo(todo._id)}>Delete</button>
+          <button className="btn btn-warning m-2" style={{width: "100px"}} onClick={() => onCompleteTodo(todo._id)}>Complete</button>
+        </li>
+      ))}
+    </ul>
   );
 };
 

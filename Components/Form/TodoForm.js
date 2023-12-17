@@ -1,33 +1,50 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const TodoForm = (props) => {
   const [todo, setTodo] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
 
-  const submitHandler = (e) => {
+  useEffect(() => {
+    if (props.editingTodo) {
+      setTodo(props.editingTodo.todo);
+      setIsEditing(true);
+    }
+  }, [props.editingTodo]);
+
+  const submitHandler = async(e) => {
     e.preventDefault();
 
-    const todoData = {
-      todo,
-      completed: false,
-    };
+    if (isEditing) {
+      const updatedTodo = { _id: props.editingTodo._id, todo };
+      await props.onEditTodo(updatedTodo);
+      setIsEditing(false);
+    } else {
+      const todoData = {
+        todo,
+        completed: false,
+      };
 
-    props.onAddTodo(todoData);
+      await props.onAddTodo(todoData);
+    }
+
+    setTodo("");
   };
 
   return (
-    <form onSubmit={submitHandler}>
+    <form onSubmit={submitHandler} className="w-50 mx-auto">
       <div className="form-group">
-        <label htmlFor="exampleInputEmail1">Your todo</label>
+        <label htmlFor="exampleInputTodo">Your todo</label>
         <input
           type="text"
           className="form-control"
           id="exampleInputTodo"
           placeholder="Enter Todo"
+          value={todo}
           onChange={(e) => setTodo(e.target.value)}
         />
       </div>
       <button type="submit" className="btn btn-primary">
-        Add Todo
+        {isEditing ? "Update Todo" : "Add Todo"}
       </button>
     </form>
   );
